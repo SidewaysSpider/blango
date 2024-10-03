@@ -2,11 +2,7 @@
 {% load blog_extras %}
 {% block content %}
 <h2>{{ post.title }}</h2>
-{% row %}
-    {% col %}
-        {% recent_posts post %}
-    {% endcol %}
-{% endrow %}
+
 {% row %}
     <div class="col">
         {% include "blog/post-byline.html" %}
@@ -16,5 +12,11 @@
     <div class="col">
         {{ post.content|safe }}
     </div>
+{% endrow %}
+{% include "blog/post-comments.html" %}
+{% row %}
+    {% col %}
+        {% recent_posts post %}
+    {% endcol %}
 {% endrow %}
 {% endblock %}
