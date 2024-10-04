@@ -4,8 +4,8 @@ register = template.Library()
 django.utils.html.escape
 django.utils.safestring.mark_safe
 from django.utils.html import format_html
-from django.contrib.auth import get_user_model
 from blog.models import Post
+from django.contrib.auth import get_user_model
 user_model = get_user_model()
 
 @register.inclusion_tag("blog/post-list.html")
