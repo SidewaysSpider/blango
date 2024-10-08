@@ -86,7 +86,7 @@ class Dev(Configuration):
             },
         },
     ]
-    """
+    
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -98,7 +98,7 @@ class Dev(Configuration):
             "level": "DEBUG",
         }
     }
-    """
+    
 
     WSGI_APPLICATION = 'blango.wsgi.application'
 
