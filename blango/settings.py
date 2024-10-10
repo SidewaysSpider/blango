@@ -19,7 +19,7 @@ import dj_database_url
 class Dev(Configuration):
     # Build paths inside the project like this: BASE_DIR / 'subdir'.
     BASE_DIR = Path(__file__).resolve().parent.parent
-
+    AUTH_USER_MODEL = "blango_auth.User"
 
     # Quick-start development settings - unsuitable for production
     # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -30,6 +30,7 @@ class Dev(Configuration):
     # SECURITY WARNING: don't run with debug turned on in production!
     #DEBUG = True
     DEBUG = values.BooleanValue(True)
+    #DEBUG = values.BooleanValue(False)
 
     #ALLOWED_HOSTS = ['*']
     ALLOWED_HOSTS = values.ListValue(["localhost", "0.0.0.0", ".codio.io"])
@@ -41,7 +42,6 @@ class Dev(Configuration):
     CSRF_COOKIE_SAMESITE = 'None'
     SESSION_COOKIE_SAMESITE = 'None'
 
-
     # Application definition
 
     INSTALLED_APPS = [
@@ -51,6 +51,7 @@ class Dev(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'blango_auth',
         'blog',
         'crispy_forms',
         'crispy_bootstrap5',
