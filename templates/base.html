@@ -16,7 +16,7 @@
                 <a class="nav-link" href="{% url "logout" %}">Log Out</a>
             {% else %}
                 <a class="nav-link" href="{% url "django_registration_register" %}">Register</a>
-                <a class="nav-link" href="{% url "login" %}">Log In</a>
+                {% comment %}<a class="nav-link" href="{% url "login" %}">Log In</a>{% endcomment %}
             {% endif %}
         </div>
     </div>

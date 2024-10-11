@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags blog_extras %}
-{% block title %}Log In to Blango{% endblock %}
+{% block title %}Log In to Blango Please{% endblock %}
 {% block content %}
 {% row "justify-content-center" %}
     {% col "col-md-6" %}
@@ -25,6 +25,12 @@
         </form>
 
         <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        {% comment %} I don't have a google account so I'm not using Google login! {% endcomment %}
+        -->
+        <p>
+            <a href="{% url "google_login" %}">Log in with Google</a>
+        </p>
+        -->
     {% endcol %}
 {% endrow %}
 {% endblock %}
