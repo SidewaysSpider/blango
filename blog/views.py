@@ -34,7 +34,7 @@ def get_ip(request):
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    logger.debug("request user is_active is %r", request.user.is_active))
+    logger.debug("request user is_active is %r", request.user.is_active)
     if request.user.is_active:
         if request.method == "POST":
             comment_form = CommentForm(request.POST)
