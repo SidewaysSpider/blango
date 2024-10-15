@@ -62,6 +62,7 @@ class Dev(Configuration):
         'allauth',
         'allauth.account',
         'allauth.socialaccount',
+        'rest_framework',
     ]
 
     CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
