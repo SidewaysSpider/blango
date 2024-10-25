@@ -18,9 +18,16 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ["id", "creator", "content", "modified_at", "created_at"]
         readonly = ["modified_at", "created_at"]
 
+class TagField(serializers.SlugRelatedField):
+    def to_internal_value(self, data):
+        try:
+            return self.get_queryset().get_or_create(value=data.lower())[0]
+        except (TypeError, ValueError):
+            self.fail(f"Tag value {data} is invalid")
+
 class PostSerializer(serializers.ModelSerializer):
     #tags and author are defined so that when the blog.api.views.PostList.as_view()  
-    #and blog.api.views.PostDetail.as_view() methods are exectuted what is returned is
+    #and blog.api.views.PostDetail.as_view() methods are exectuted what is returned 
     #are meaningful values rather than just the primary keys.  For example, if tags
     #wasn't defined as below, the tags field in the output permission_classes
     #per https://blah-8000.codio.io/api/v1/posts/1
@@ -29,10 +36,18 @@ class PostSerializer(serializers.ModelSerializer):
     #rather than 
     #"tags": ["Bondos"]
 
+    """
+    from an earlier version
     tags = serializers.SlugRelatedField(
         slug_field="value", many=True, queryset=Tag.objects.all()
     )
+    """
     
+    tags = TagField(
+        slug_field="value", many=True,
+        queryset=Tag.objects.all()
+   )
+
     author = serializers.HyperlinkedRelatedField(
         queryset=User.objects.all(), view_name="api_user_detail", lookup_field="email"
     )
