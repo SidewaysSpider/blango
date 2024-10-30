@@ -4,6 +4,11 @@ from blango_auth.models import User
 import logging
 logger = logging.getLogger(__name__)
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = "__all__"
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

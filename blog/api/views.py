@@ -1,15 +1,22 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 
 from blango_auth.models import User
-from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer
-from blog.models import Post
+#from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer
+from blog.api.serializers import (
+    PostSerializer,
+    UserSerializer,
+    PostDetailSerializer,
+    TagSerializer,
+)
+from blog.models import Post, Tag
 #from blog.api.permissions import AuthorModifyOrReadOnly
 from blog.api.permissions import AuthorModifyOrReadOnly, IsAdminUserForObject
 
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 import logging
 logger = logging.getLogger(__name__)
-
-
 
 """
 class PostList below extends generics.ListCreateAPIView which in turn 
@@ -31,7 +38,7 @@ blog.api.view.PostList.as_view():
 from urls.py we have:
 path("api/v1/", include("blog.api.urls"))
 from blog.api.urls.py we have:
-path("posts/<int:pk>", PostDetail.as_view(), name="api_post_detail")
+path("posts/", PostList.as_view(), name="api_post_list"
 
 When extending generics.GenericAPIView, generics.ListCreateAPIView does not set 
 queryset and serializer_class. So these must set within any given subclass of it. 
@@ -165,16 +172,38 @@ for documentation on RetrieveModelMixin.
 
 """
 class UserDetail(generics.RetrieveAPIView):
-    lookup_field = "email"
-    """ 
-    By default, lookup_field is set to 'pk' in RetrieveAPIView which means it uses the
-    primary key to find the desired record.  Above we set lookup_field to "email" which means
-    it uses email field to find the desired record.  An example url would be:
+    """
+    By default, lookup_field is set to 'pk' in RetrieveAPIView which means
+    it uses the primary key to find the desired record.  Below we set lookup_field
+    to "email" which means it uses the email field to find the desired record.  
+    An example url would be:
     .../api/v1/users/Rengie899@gmail.com
     """
+    lookup_field = "email"
     queryset = User.objects.all()
     logger.debug("In blog.api.views.UserDetail and")
     logger.debug("queryset[0] and queryset[1] are")
     logger.debug(queryset[0])
     logger.debug(queryset[1])
     serializer_class = UserSerializer
+
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+    @action(methods=["get"], detail=True, name="Posts with the Tag")
+    def posts(self, request, pk=None):
+        tag = self.get_object()
+        post_serializer = PostSerializer(
+            tag.posts, many=True, context={"request": request}
+        )
+        return Response(post_serializer.data)
+
+class PostViewSet(viewsets.ModelViewSet):
+    permission_classes = [AuthorModifyOrReadOnly | IsAdminUserForObject]
+    queryset = Post.objects.all()
+
+    def get_serializer_class(self):
+        if self.action in ("list", "create"):
+            return PostSerializer
+        return PostDetailSerializer
