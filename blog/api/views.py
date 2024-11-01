@@ -111,7 +111,7 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
 Explanation:
 queryset: Specifies the queryset to use for retrieving the object.
 serializer_class: Specifies the serializer class to use for serializing the object and validating 
-incoming data. With this setup, you can perform the following actions:
+incoming data. With this setup, you can perform the following:
 GET /products/{id}/: Retrieve a specific product.
 PUT /products/{id}/: Update a product with a full payload.
 PATCH /products/{id}/: Partially update a product.
