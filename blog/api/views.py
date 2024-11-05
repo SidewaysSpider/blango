@@ -182,9 +182,9 @@ class UserDetail(generics.RetrieveAPIView):
     lookup_field = "email"
     queryset = User.objects.all()
     logger.debug("In blog.api.views.UserDetail and")
-    logger.debug("queryset[0] and queryset[1] are")
-    logger.debug(queryset[0])
-    logger.debug(queryset[1])
+    #logger.debug("queryset[0] and queryset[1] are")
+    #logger.debug(queryset[0])
+    #logger.debug(queryset[1])
     serializer_class = UserSerializer
 
 class TagViewSet(viewsets.ModelViewSet):
