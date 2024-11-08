@@ -245,6 +245,7 @@ class PostViewSet(viewsets.ModelViewSet):
           queryset = User.objects.filter(
              first_name__startswith='R'
            ) | User.objects.filter(last_name__startswith='D')
+          see https://books.agiliq.com/projects/django-orm-cookbook/en/latest/query_relatedtool.html
           """
           queryset = self.queryset.filter(
             Q(published_at__lte=timezone.now()) | Q(author=self.request.user)
