@@ -239,9 +239,12 @@ class PostViewSet(viewsets.ModelViewSet):
         # filter for own or
         else:
           """
-          return self.queryset.filter(
-            Q(published_at__lte=timezone.now()) | Q(author=self.request.user)
-          )
+          an example of filtering using Q is:
+          queryset = User.objects.filter(Q(first_name__startswith='R')|Q(last_name__startswith='D'))
+          for comparison purposes, an alternative verbose way to do the same filtering is:
+          queryset = User.objects.filter(
+             first_name__startswith='R'
+           ) | User.objects.filter(last_name__startswith='D')
           """
           queryset = self.queryset.filter(
             Q(published_at__lte=timezone.now()) | Q(author=self.request.user)
