@@ -48,7 +48,8 @@ class PostApiTestCase(TestCase):
 
       def test_post_list(self):
         resp = self.client.get("/api/v1/posts/")
-        data = resp.json()
+        #data = resp.json() assumes the results are in the root of resp
+        data = resp.json()["results"] #because of pagination 
         self.assertEqual(len(data), 2)
 
         for post_dict in data:
