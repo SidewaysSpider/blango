@@ -1,0 +1,3 @@
+This is for checking that media serving is set up.
+Hello I'm a dumb Texan file for use in a download test.
+Here the path is /media/test.txt
