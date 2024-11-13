@@ -31,6 +31,8 @@ def get_ip(request):
   from django.http import HttpResponse
   return HttpResponse(request.META['REMOTE_ADDR'])
 
+def post_table(request):
+    return render(request, "blog/post-table.html")
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
