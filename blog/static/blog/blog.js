@@ -1,3 +1,21 @@
+
+
+['/api/v1/posts/', '/', '/abadurl/'].forEach(url => {
+  fetch(url).then(response => {
+    if (response.status !== 200) {
+      throw new Error('Invalid status from server: ' + response.statusText)
+    }
+
+    return response.json()
+  }).then(data => {
+    // do something with data, for example
+    console.log(data)
+  }).catch(e => {
+    console.error(e)
+  })
+})
+
+
 //The following class is an example of a React Component class
 //Start of class NonJsxAndSimpleJsx_ClickButton
 class NonJsxAndSimpleJsx_ClickButton extends React.Component {
@@ -130,6 +148,7 @@ class PostRow extends React.Component {
 
 //Start of class PostTable; this is for defining a table component
 class PostTable extends React.Component {
+  /*
   state = {
     dataLoaded: true,
     data: {
@@ -149,6 +168,44 @@ class PostTable extends React.Component {
         }
       ]
     }
+  }
+  */
+
+  state = {
+    dataLoaded: false,
+    data: null
+  }
+
+  /*
+   -componentDidMount is called right after a component is added to the
+    web page.
+   -component WillUnmount called right before a component is removed from
+    the web page.
+   -componentDidUpdate called when the parent component re-renders and passes
+    a different property to the child component.
+*/
+  componentDidMount () {
+    #fetch('/api/v1/posts/').then(response => {
+    fetch(this.props.url).then(response => {
+      if (response.status !== 200) {
+        throw new Error('Invalid status from server: ' + response.statusText)
+      }
+
+      return response.json()
+    }).then(data => {
+      this.setState({
+        dataLoaded: true,
+        data: data
+      })
+    }).catch(e => {
+      console.error(e)
+      this.setState({
+        dataLoaded: true,
+        data: {
+          results: []
+        }
+      })
+    })
   }
 
   render () {
@@ -187,7 +244,16 @@ class PostTable extends React.Component {
 //End of class PostTable
 
 const domContainer = document.getElementById('react_root')
+"""
 ReactDOM.render(
   React.createElement(PostTable),
+  domContainer
+)
+"""
+ReactDOM.render(
+  React.createElement(
+    PostTable,
+    {url: postListUrl}
+  ),
   domContainer
 )

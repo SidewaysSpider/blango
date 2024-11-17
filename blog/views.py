@@ -7,6 +7,8 @@ from blog.forms import CommentForm
 from django.views.decorators.cache import cache_page
 import logging
 
+from django.urls import reverse
+
 logger = logging.getLogger(__name__)
 
 # Create your views here.
@@ -32,7 +34,13 @@ def get_ip(request):
   return HttpResponse(request.META['REMOTE_ADDR'])
 
 def post_table(request):
-    return render(request, "blog/post-table.html")
+    #the logger.debug output should indicate that
+    #reverse("post-list") is the string /api/v1/posts/
+    logger.debug("reverse of post-list is %s",reverse("post-list") )
+    #return render(request, "blog/post-table.html")
+    return render(
+        request, "blog/post-table.html", {"post_list_url": reverse("post-list")}
+    )
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
