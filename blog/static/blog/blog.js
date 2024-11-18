@@ -1,5 +1,3 @@
-
-
 ['/api/v1/posts/', '/', '/abadurl/'].forEach(url => {
   fetch(url).then(response => {
     if (response.status !== 200) {
@@ -17,8 +15,8 @@
 
 
 //The following class is an example of a React Component class
-//Start of class NonJsxAndSimpleJsx_ClickButton
-class NonJsxAndSimpleJsx_ClickButton extends React.Component {
+//Start of class ClickButton
+class ClickButton extends React.Component {
   state = {
     wasClicked: false
   }
@@ -91,7 +89,8 @@ array of strings or other elements.
     </button>
   }
 }
-//End of class NonJsxAndSimpleJsx_ClickButton
+//End of class ClickButton
+
 /*
 To mount a component onto the page (or the DOM) we use the
 ReactDOM.render() function.
@@ -100,21 +99,21 @@ ReactDOM.render requires two arguments: the component (aka react element)
 to be rendered and the location on the page where it should be 
 mounted (aka DOM element in which to render it).
 
-NonJsxAndSimpleJsx_ClickButton)is the component class, and 
-React.createElement(NonJsxAndSimpleJsx_ClickButton))
+ClickButton is the component class, and React.createElement(ClickButton))
 creates the actual component. It should be the first argument of
 ReactDOM.render. document.getElementById('react_root') denotes the 
 element on the page where the component will be mounted. It should be
 the second argument of ReactDOM.render.
 The react_root element is a div element defined in 
 blango/templates/blog/post-table.html
+*/
 
 const domContainer = document.getElementById('react_root')
 ReactDOM.render(
-  React.createElement(NonJsxAndSimpleJsx_ClickButton),
+  React.createElement(ClickButton),
   domContainer
 )
-*/
+
 
 //-----------------------------------------------
 //The following classes support a React based table display
@@ -182,8 +181,8 @@ class PostTable extends React.Component {
    -component WillUnmount called right before a component is removed from
     the web page.
    -componentDidUpdate called when the parent component re-renders and passes
-    a different property to the child component.
-    below the fetch command replaces fetch('/api/v1/posts/').then(response => {
+    a different property to the child component.  
+    no longer using fetch('/api/v1/posts/').then(response => {
   */
   componentDidMount () {
     fetch(this.props.url).then(response => {
@@ -243,13 +242,14 @@ class PostTable extends React.Component {
 }
 //End of class PostTable
 
+/*
 const domContainer = document.getElementById('react_root')
-"""
+
 ReactDOM.render(
   React.createElement(PostTable),
   domContainer
 )
-"""
+
 ReactDOM.render(
   React.createElement(
     PostTable,
@@ -257,3 +257,4 @@ ReactDOM.render(
   ),
   domContainer
 )
+*/
