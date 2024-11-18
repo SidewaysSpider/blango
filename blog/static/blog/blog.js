@@ -183,9 +183,9 @@ class PostTable extends React.Component {
     the web page.
    -componentDidUpdate called when the parent component re-renders and passes
     a different property to the child component.
-*/
+    below the fetch command replaces fetch('/api/v1/posts/').then(response => {
+  */
   componentDidMount () {
-    #fetch('/api/v1/posts/').then(response => {
     fetch(this.props.url).then(response => {
       if (response.status !== 200) {
         throw new Error('Invalid status from server: ' + response.statusText)

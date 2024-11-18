@@ -10,12 +10,12 @@
     <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    /*
+    {% comment %}
      When passing a variable from Django to JavaScript, you need to use
      double curly brackets and the escapejs filter. The json_script filter is
      used when you are passing a dictionary, and post_list_url is not a
      dictionary; it is a string.
-    */
+    {% endcomment %}
     <script>
         const postListUrl = '{{ post_list_url|escapejs }}'
     </script>
