@@ -106,14 +106,13 @@ element on the page where the component will be mounted. It should be
 the second argument of ReactDOM.render.
 The react_root element is a div element defined in 
 blango/templates/blog/post-table.html
-*/
 
 const domContainer = document.getElementById('react_root')
 ReactDOM.render(
   React.createElement(ClickButton),
   domContainer
 )
-
+*/
 
 //-----------------------------------------------
 //The following classes support a React based table display
@@ -242,7 +241,6 @@ class PostTable extends React.Component {
 }
 //End of class PostTable
 
-/*
 const domContainer = document.getElementById('react_root')
 
 ReactDOM.render(
@@ -257,4 +255,3 @@ ReactDOM.render(
   ),
   domContainer
 )
-*/
