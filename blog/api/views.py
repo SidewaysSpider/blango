@@ -318,4 +318,6 @@ class PostViewSet(viewsets.ModelViewSet):
     @method_decorator(cache_page(120))
     @method_decorator(vary_on_headers("Authorization", "Cookie"))
     def list(self, *args, **kwargs):
-        return super(PostViewSet, self).list(*args, **kwargs)
+        return super(PostViewSet, self).list(*args, **kwargs) #super is viewsets.ModelViewSet which has a 
+                                                              #list method.  See def list(...) under Methods at
+                                                              #https://www.cdrf.co/3.1/rest_framework.viewsets/ModelViewSet.html
