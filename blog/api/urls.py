@@ -15,7 +15,8 @@ from blog.api.views import PostViewSet
 
 router = DefaultRouter()
 router.register("tags", TagViewSet)
-router.register("posts", PostViewSet)
+router.register("posts", PostViewSet) #url='/posts'	HTTP Method=GET	Action=list URL Name=post-list
+                                      #reverse of post-list is /api/v1/posts/
 
 schema_view = get_schema_view(
     openapi.Info(
