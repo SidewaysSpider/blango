@@ -12,11 +12,28 @@ import os
 #from blog.api.views import PostList, PostDetail, UserDetail
 from blog.api.views import PostList, PostDetail, UserDetail, TagViewSet
 from blog.api.views import PostViewSet
+"""
+A DRF Router will inspect a viewset and determine what endpoints it has available,
+then create the right URL patterns automatically. Usually you will want to use the
+rest_framework.routers.DefaultRouter class.  This class inherits from the SimpleRouter class 
+which in turn inherits from the BaseRouter class. The register method is a BaseRouter method.
+The code for this method is:
+    def register(self, prefix, viewset, basename=None):
+        if basename is None:
+            basename = self.get_default_basename(viewset)
+        self.registry.append((prefix, viewset, basename))
 
+        # invalidate the urls cache
+        if hasattr(self, '_urls'):
+            del self._urls
+We see that per the 1st of the two router.register commands below, perfix would be received by def register as "tags"
+and viewset would be received as TagViewSet.  For the 2nd of the two router.register commands below, prefix would
+be received by def register as "posts" and viewset would be received as PostViewSet.
+"""
 router = DefaultRouter()
 router.register("tags", TagViewSet)
 router.register("posts", PostViewSet) #per this router register, for HTTP Method=GET, url='/posts/'	Action=list  URL Name=post-list
-                                      #or for HTTP Method=POST, url=/posts/  Action=create  URL Name=post-list
+                                      #and for HTTP Method=POST, url=/posts/  Action=create  URL Name=post-list
                                       #and the Viewset that is identifed to be accessed is PostViewSet which per the
                                       #above import is in blog.api.views.
                                       #reverse of post-list is /api/v1/posts/ because in blango/urls.py
