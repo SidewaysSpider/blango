@@ -17,6 +17,7 @@ router = DefaultRouter()
 router.register("tags", TagViewSet)
 router.register("posts", PostViewSet) #url='/posts'	HTTP Method=GET	Action=list URL Name=post-list
                                       #reverse of post-list is /api/v1/posts/
+                                      #this is because in blango/urls.py we have/api/v1/posts/
 
 schema_view = get_schema_view(
     openapi.Info(
