@@ -15,19 +15,20 @@ from blog.api.views import PostViewSet
 
 router = DefaultRouter()
 router.register("tags", TagViewSet)
-router.register("posts", PostViewSet) #per this router register, url='/posts'	HTTP Method=GET	 Action=list  URL Name=post-list
+router.register("posts", PostViewSet) #per this router register, for HTTP Method=GET, url='/posts/'	Action=list  URL Name=post-list
+                                      #or for HTTP Method=POST, url=/posts/  Action=create  URL Name=post-list
                                       #and the Viewset that is identifed to be accessed is PostViewSet which per the
                                       #above import is in blog.api.views.
                                       #reverse of post-list is /api/v1/posts/ because in blango/urls.py
                                       #one of the paths is path("api/v1/", include("blog.api.urls")),
                                       #and below we have urlpatterns += [path("", include(router.urls)),] which causes 
-                                      #the url for accessing PostViewSet to be /api/v1/posts 
+                                      #the url for accessing PostViewSet to be /api/v1/posts/ 
                                       #See https://www.django-rest-framework.org/api-guide/routers/#defaultrouter
                                       #In particular scroll down to 'Using Routers', where it states that
                                       #"Because we're using ViewSet classes rather than View classes, we actually don't need to
                                       #design the URL conf ourselves. The conventions for wiring up resources into views and urls 
-                                      #can be handled automatically, using a Router class. All we need to do is register the appropriate
-                                      #view sets with a router, and let it do the rest. ..."
+                                      #can be handled automatically, using a Router class (such as above DefaultRoute()). All we  
+                                      #need to do is register the appropriate view sets with a router, and let it do the rest. ..."
 
 schema_view = get_schema_view(
     openapi.Info(
