@@ -20,9 +20,14 @@
         const postListUrl = '{{ post_list_url|escapejs }}'
     </script>
     {% comment %}
-     {% load static %} above enables static with be used in the below script.
-     There the use of static is prepend blog/static/ to blog/blog.js
-     which causes src to be set to blog/static/blog/blog.js
+     In Django, STATIC_URL = '/static/' is a setting that defines the base URL for 
+     serving static files like CSS, JavaScript, and images. 
+     In blango/settings.py we indeed see STATIC_URL = '/static/'
+     {% load static %} above causes the value for STATIC_URL to be loaded.
+     and stored in static. We see that static is used in the below script.
+     There the application of static is to prepend /static/ to blog/blog.js
+     which causes src to be set to /static/blog/blog.js.  Django knows that it
+     then needs to prepend blog/ so that src becomes blog/static/blog/blog.js
     {% comment %}
     <script type="text/babel" src="{% static "blog/blog.js" %}"></script>
     
