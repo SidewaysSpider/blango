@@ -19,7 +19,11 @@
     <script>
         const postListUrl = '{{ post_list_url|escapejs }}'
     </script>
-
+    {% comment %}
+     {% load static %} above enables static with be used in the below script.
+     There the use of static is prepend blog/static/ to blog/blog.js
+     which causes src to be set to blog/static/blog/blog.js
+    {% comment %}
     <script type="text/babel" src="{% static "blog/blog.js" %}"></script>
     
 {% endblock %}
