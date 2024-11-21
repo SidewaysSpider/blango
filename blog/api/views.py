@@ -204,6 +204,17 @@ class UserDetail(generics.RetrieveAPIView):
     def get(self, *args, **kwargs):
         return super(UserDetail, self).get(*args, *kwargs)
 
+"""
+For TagViewSet and PostViewSet the urls are established by virture of the following lines in
+../blog/api/urls.py
+
+from rest_framework.routers import DefaultRouter
+...
+router = DefaultRouter()
+router.register("tags", TagViewSet)
+router.register("posts", PostViewSet)
+"""
+
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
