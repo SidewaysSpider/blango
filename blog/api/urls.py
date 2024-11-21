@@ -32,18 +32,29 @@ be received by def register as "posts" and viewset would be received as PostView
 """
 router = DefaultRouter()
 router.register("tags", TagViewSet)
-router.register("posts", PostViewSet) #per this router register, for HTTP Method=GET, url='/posts/'	Action=list  URL Name=post-list
-                                      #and for HTTP Method=POST, url=/posts/  Action=create  URL Name=post-list
+router.register("posts", PostViewSet) #per this router register, 
+                                      #for HTTP GET /api/v1/posts/, url='/posts/' Action=list  URL Name=post-list.
+                                      #for HTTP GET /api/v1/posts/1/ url='/posts/1/' Action=Retrieve  URL Name=post-retrieve
+                                      #for HTTP POST /api/v1/posts/, url='/posts/' Action=create  URL Name=post-create
+                                      #For HTTP PUT /api/v1/posts/1/, url='/posts/1/' Action=update URL Name=post-update
                                       #and the Viewset that is identifed to be accessed is PostViewSet which per the
                                       #above import is in blog.api.views.
-                                      #reverse of post-list is /api/v1/posts/ because in blango/urls.py
+                                      #So, for example, reverse of post-list is /api/v1/posts/ because in blango/urls.py
                                       #one of the paths is path("api/v1/", include("blog.api.urls")),
                                       #and below we have urlpatterns += [path("", include(router.urls)),] which causes 
                                       #the ending of the url for accessing PostViewSet to be /api/v1/posts/ 
-                                      #For example, the codio url produced by router.register("posts", PostViewSet) would 
+                                      #Thus, the codio url produced by router.register("posts", PostViewSet) would be
                                       #something like the following:
                                       #https://bondobros-meetwithfox-8000.codio.io/api/v1/posts/
-                                      #and this would cause invocation of PostViewSet in blog/api/views.py.
+                                      #For HTTP GET /api/v1/posts/, the list method in PostViewSet would be invoked.
+                                      #For HTTP POST /api/v1/posts/, the default create method in viewsets.ModelViewSet
+                                      #would be invoked as viewsets.ModelViewSet is inherited by PostViewSet.
+                                      #For HTTP PUT /api/v1/posts/1/, the default update method in viewsets.ModelViewSet would be invoked.
+                                      #
+                                      #Likewise, the codio url produced by router.register("posts", TagViewSet) would be
+                                      #https://bondobros-meetwithfox-8000.codio.io/api/v1/tages/
+                                      #and likewise the methods invoked would be analogous to what are invoked for ../posts/
+                                      #
                                       #For more on this topic, see https://www.django-rest-framework.org/api-guide/routers/#defaultrouter
                                       #In particular scroll down to 'Using Routers', where it states that
                                       #"Because we're using ViewSet classes rather than View classes, we actually don't need to
