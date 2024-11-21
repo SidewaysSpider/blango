@@ -39,8 +39,12 @@ router.register("posts", PostViewSet) #per this router register, for HTTP Method
                                       #reverse of post-list is /api/v1/posts/ because in blango/urls.py
                                       #one of the paths is path("api/v1/", include("blog.api.urls")),
                                       #and below we have urlpatterns += [path("", include(router.urls)),] which causes 
-                                      #the url for accessing PostViewSet to be /api/v1/posts/ 
-                                      #See https://www.django-rest-framework.org/api-guide/routers/#defaultrouter
+                                      #the ending of the url for accessing PostViewSet to be /api/v1/posts/ 
+                                      #For example, the codio url produced by router.register("posts", PostViewSet) would 
+                                      #something like the following:
+                                      #https://bondobros-meetwithfox-8000.codio.io/api/v1/posts/
+                                      #and this would cause invocation of PostViewSet in blog/api/views.py.
+                                      #For more on this topic, see https://www.django-rest-framework.org/api-guide/routers/#defaultrouter
                                       #In particular scroll down to 'Using Routers', where it states that
                                       #"Because we're using ViewSet classes rather than View classes, we actually don't need to
                                       #design the URL conf ourselves. The conventions for wiring up resources into views and urls 
