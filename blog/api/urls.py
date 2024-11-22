@@ -26,20 +26,30 @@ The code for this method is:
         # invalidate the urls cache
         if hasattr(self, '_urls'):
             del self._urls
-We see that per the 1st of the two router.register commands below, perfix would be received by def register as "tags"
-and viewset would be received as TagViewSet.  For the 2nd of the two router.register commands below, prefix would
-be received by def register as "posts" and viewset would be received as PostViewSet.
+We see that per the 1st of the two router.register calls below, prefix would be received as "tags" and
+viewset would be received as TagViewSet.  For the 2nd of the two router.register commands below, prefix would be received
+as "posts" and viewset would be received as PostViewSet.  basename is is not specified in either of the below two
+router.register calls so it is by default determined in the method get_default_basename(self, viewset) which is in class
+SimpleRouter(BaseRouter) in rest_framework.routers.py.  The DefaultRouter class (also in rest_framework.routers.py) inherits
+form class SimpleRouter.  In get_default_basename(self, viewset) we see basename = queryset.model._meta.object_name.lower()
+which means it is set equal to the value _meta.object_name for the identified in queryset object.  In the case of
+viewset = PostViewSet, we see queryset=Post.objects.all() in class PostViewSet (found in ../blog/api/veiws.py); this queryset object
+includes the object named model which enables model._meta.object._name.lower() to be executed.  We can surmise that this
+results in basename being set to post.  So, for router.register("posts", PostViewSet), we see that 
+self.registry.append((prefix, viewset, basename) would result in the list ("posts",PostViewSet,"post").  We can further
+surmise that the URL Name is set to "post" + "-" + str(Action). So for example, for /api/v1/posts/ URL Name would be set 
+to "post-list" and for /api/v1/posts/<pk>/ URL name would be set to "post-retrieve".
 """
 router = DefaultRouter()
 router.register("tags", TagViewSet)
 router.register("posts", PostViewSet) #per this router register, 
                                       #for HTTP GET /api/v1/posts/, url='/posts/' Action=list  URL Name=post-list
-                                      #for HTTP GET /api/v1/posts/1/ url='/posts/1/' Action=Retrieve  URL Name=post-list
+                                      #for HTTP GET /api/v1/posts/1/ url='/posts/1/' Action=Retrieve  URL Name=post-retrieve
                                       #where 1 is an example of a pk value.
-                                      #for HTTP POST /api/v1/posts/, url='/posts/' Action=create  URL Name=post-list
-                                      #For HTTP PUT /api/v1/posts/1/, url='/posts/1/' Action=update URL Name=post-list
+                                      #for HTTP POST /api/v1/posts/, url='/posts/' Action=create  URL Name=post-create
+                                      #For HTTP PUT /api/v1/posts/1/, url='/posts/1/' Action=update URL Name=post-update
                                       #mine is a special method in PostViewSet.  The relevant HTTP request is
-                                      #GET /api/v1/posts/mine/ with url='posts/mine/'  Action=list  URL Name=post-list
+                                      #GET /api/v1/posts/mine/ with url='posts/mine/'  Action=list  URL Name=post-mine
                                       #and the Viewset that is identifed to be accessed is PostViewSet which per the
                                       #above import is in blog.api.views.
                                       #So, for example, reverse of post-list is /api/v1/posts/ because in blango/urls.py
