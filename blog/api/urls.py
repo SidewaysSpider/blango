@@ -38,16 +38,17 @@ includes the object named model which enables model._meta.object._name.lower() t
 results in basename being set to post.  So, for router.register("posts", PostViewSet), we see that 
 self.registry.append((prefix, viewset, basename) would result in the list ("posts",PostViewSet,"post").  We can further
 surmise that the URL Name is set to "post" + "-" + str(Action). So for example, for /api/v1/posts/ URL Name would be set 
-to "post-list" and for /api/v1/posts/<pk>/ URL name would be set to "post-retrieve".
+to "post-list".   The value for Action for any request going to blog.api.views.PostViewSet is output by logger.debug in
+the PostViewSet get_queryset method. 
 """
 router = DefaultRouter()
 router.register("tags", TagViewSet)
 router.register("posts", PostViewSet) #per this router register, 
                                       #for HTTP GET /api/v1/posts/, url='/posts/' Action=list  URL Name=post-list
-                                      #for HTTP GET /api/v1/posts/1/ url='/posts/1/' Action=Retrieve  URL Name=post-retrieve
+                                      #for HTTP GET /api/v1/posts/1/ url='/posts/1/' Action=Retrieve  URL Name=post-detail
                                       #where 1 is an example of a pk value.
-                                      #for HTTP POST /api/v1/posts/, url='/posts/' Action=create  URL Name=post-create
-                                      #For HTTP PUT /api/v1/posts/1/, url='/posts/1/' Action=update URL Name=post-update
+                                      #for HTTP POST /api/v1/posts/, url='/posts/' Action=create  URL Name=post-list
+                                      #For HTTP PUT /api/v1/posts/1/, url='/posts/1/' Action=update URL Name=post-detail
                                       #mine is a special method in PostViewSet.  The relevant HTTP request is
                                       #GET /api/v1/posts/mine/ with url='posts/mine/'  Action=list  URL Name=post-mine
                                       #and the Viewset that is identifed to be accessed is PostViewSet which per the

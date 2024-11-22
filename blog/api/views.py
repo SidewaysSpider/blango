@@ -28,6 +28,8 @@ from rest_framework.exceptions import PermissionDenied
 
 from blog.api.filters import PostFilterSet
 
+from django.urls import resolve
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -251,6 +253,11 @@ class PostViewSet(viewsets.ModelViewSet):
     ordering_fields = ["published_at", "author", "title", "slug"]
 
     def get_queryset(self):
+        path = self.request.path
+        resolved = resolve(path)
+        url_name = resolved.url_name
+        logger.debug("in blog.api.views.PostViewSet.get_queryset and url_name is")
+        logger.debug(url_name)
         if self.request.user.is_anonymous:
             # published only
             #return self.queryset.filter(published_at__lte=timezone.now())

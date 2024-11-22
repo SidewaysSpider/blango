@@ -1,3 +1,4 @@
+/*
 ['/api/v1/posts/', '/', '/abadurl/'].forEach(url => {
   fetch(url).then(response => {
     if (response.status !== 200) {
@@ -12,7 +13,7 @@
     console.error(e)
   })
 })
-
+*/
 
 //The following class is an example of a React Component class
 //Start of class ClickButton
@@ -242,11 +243,6 @@ class PostTable extends React.Component {
 //End of class PostTable
 
 const domContainer = document.getElementById('react_root')
-
-ReactDOM.render(
-  React.createElement(PostTable),
-  domContainer
-)
 
 ReactDOM.render(
   React.createElement(
