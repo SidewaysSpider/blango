@@ -28,7 +28,7 @@
      There the application of static is to prepend /static/ to blog/blog.js
      which causes src to be set to /static/blog/blog.js.  Django knows that it
      then needs to prepend blog/ so that src becomes blog/static/blog/blog.js
-    {% comment %}
+    {% endcomment %}
     <script type="text/babel" src="{% static "blog/blog.js" %}"></script>
     
 {% endblock %}
