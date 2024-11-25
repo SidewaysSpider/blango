@@ -232,14 +232,27 @@ class TagViewSet(viewsets.ModelViewSet):
         logger.debug(pk)
         logger.debug(self.request)
         tag = self.get_object()
+        
         """
-        page = self.paginate_queryset(tag.posts)
+        From Discussion Forum for Course 3 Module 1
+        Notice that we have the many to many relationship between Tag and Post model. 
+            JB insert comment: this many to many relationship means there can be many
+            tags for a given post and many posts for a given tag.
+        So in the TagViewSet, inside the posts method at the:
+        page =self.paginate_queryset(tag.posts)
+        We have to change it to:
+        page = self.paginate_queryset(tag.posts.all( ))
+        Since tag.posts is not the queryset, it's the manager of a Model which provides
+        query operations. 
+        """
+        page = self.paginate_queryset(tag.posts.all())
+        #page = self.paginate_queryset(tag.posts) bad code from Course 3 Module1 Guide
         if page is not None:
             post_serializer = PostSerializer(
                 page, many=True, context={"request": request}
             )
             return self.get_paginated_response(post_serializer.data)
-        """
+        
 
         post_serializer = PostSerializer(
             tag.posts, many=True, context={"request": request}
