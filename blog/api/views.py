@@ -223,14 +223,23 @@ class TagViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=True, name="Posts with the Tag")
     def posts(self, request, pk=None):
+        path = self.request.path
+        resolved = resolve(path)
+        url_name = resolved.url_name
+        logger.debug("in blog.api.views.TagViewSet.posts and url_name is")
+        logger.debug(url_name)
+        logger.debug("Inside TagView.posts and pk and self.request are")
+        logger.debug(pk)
+        logger.debug(self.request)
         tag = self.get_object()
-
+        """
         page = self.paginate_queryset(tag.posts)
         if page is not None:
             post_serializer = PostSerializer(
                 page, many=True, context={"request": request}
             )
             return self.get_paginated_response(post_serializer.data)
+        """
 
         post_serializer = PostSerializer(
             tag.posts, many=True, context={"request": request}
@@ -239,10 +248,20 @@ class TagViewSet(viewsets.ModelViewSet):
 
     @method_decorator(cache_page(300))
     def list(self, *args, **kwargs):
+        path = self.request.path
+        resolved = resolve(path)
+        url_name = resolved.url_name
+        logger.debug("in blog.api.views.TagViewSet.list and url_name is")
+        logger.debug(url_name)
         return super(TagViewSet, self).list(*args, **kwargs)
 
     @method_decorator(cache_page(300))
     def retrieve(self, *args, **kwargs):
+        path = self.request.path
+        resolved = resolve(path)
+        url_name = resolved.url_name
+        logger.debug("in blog.api.views.TagViewSet.retrieve and url_name is")
+        logger.debug(url_name)
         return super(TagViewSet, self).retrieve(*args, **kwargs)
 
 class PostViewSet(viewsets.ModelViewSet):
