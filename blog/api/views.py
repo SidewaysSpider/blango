@@ -231,20 +231,92 @@ class TagViewSet(viewsets.ModelViewSet):
         logger.debug("Inside TagView.posts and pk and self.request are")
         logger.debug(pk)
         logger.debug(self.request)
-        tag = self.get_object()
+        """ 
+        We have access to the pk from the URL, so we could fetch the Tag object
+        from the database ourselves. However, the ModelViewSet class provides a
+        helper method that will do that for us, get_object(), so we use that
+        instead.
+        From https://docs.djangoproject.com/en/5.1/ref/class-based-views/mixins-single-object/#:~:text=get_object()%20looks%20for%20a,slug%20lookup%20using%20the%20slug_field%20.
+        we have:
+        get_object(queryset=None)    
+            returns an object or objects that this view will display. 
+            If queryset is provided, that queryset will be used as the source of objects; 
+            otherwise, get_queryset() will be used. get_object() looks for a 
+            pk_url_kwarg argument in the arguments to the view; if this argument is 
+            found, this method performs a primary-key based lookup using that value. 
+            If this argument is not found, it looks for a slug_url_kwarg argument, 
+            and performs a slug lookup using the slug_field.
+            When query_pk_and_slug is True, get_object() will perform its lookup using both
+            the primary key and the slug.
+        
+        get_queryset()
+            Returns the queryset that will be used to retrieve the object that this view will 
+            display. By default, get_queryset() returns the value of the queryset attribute 
+            if it is set, otherwise it constructs a QuerySet by calling the all() method on 
+            the model attribute’s default manager.
+
+        JB add on comments
+        self.get_object() below accesses def get_object method located in 
+        rest_framework.generics.  This is per the following inheritence.
+        -class TagViewSet inherits from the class viewsets.ModelViewSet
+        -in viewsets we see the following code block for ModelViewSet
+        class ModelViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   GenericViewSet):
+        -class viewsets.GenericViewSet inherits from ViewSetMixin and generics.GenericAPIView
+         Our inheritence path is to generics.GenericAPIView
+        -the code for class generics.GenericAPIView is as follows:
+        def get_object(self):
+        
+            #Returns the object the view is displaying.
+
+            #You may want to override this if you need to provide non-standard
+            #queryset lookups.  Eg if objects are referenced using multiple
+            #keyword arguments in the url conf.
+            queryset = self.filter_queryset(self.get_queryset())
+
+            # Perform the lookup filtering.
+            lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+
+            assert lookup_url_kwarg in self.kwargs, (
+                'Expected view %s to be called with a URL keyword argument '
+                'named "%s". Fix your URL conf, or set the `.lookup_field` '
+                'attribute on the view correctly.' %
+                (self.__class__.__name__, lookup_url_kwarg)
+            )
+
+            filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+            obj = get_object_or_404(queryset, **filter_kwargs)
+
+            # May raise a permission denied
+            self.check_object_permissions(self.request, obj)
+
+            return obj 
+        """
+
+        tag = self.get_object() 
+        logger.debug("type of tag and tag are")
+        logger.debug(type(tag))
+        logger.debug(tag)
         
         """
         From Discussion Forum for Course 3 Module 1
-        Notice that we have the many to many relationship between Tag and Post model. 
-            JB insert comment: this many to many relationship means there can be many
+        'Notice that we have the many to many relationship between Tag and Post model. 
+            Jeff B insert comment: this many to many relationship means there can be many
             tags for a given post and many posts for a given tag.
         So in the TagViewSet, inside the posts method at the:
         page =self.paginate_queryset(tag.posts)
         We have to change it to:
         page = self.paginate_queryset(tag.posts.all( ))
         Since tag.posts is not the queryset, it's the manager of a Model which provides
-        query operations. 
-        """
+        query operations.
+
+        I hope this experience can help you guys out there. And hopefully the staff is 
+        going to alter the code.'
+                """
         page = self.paginate_queryset(tag.posts.all())
         #page = self.paginate_queryset(tag.posts) bad code from Course 3 Module1 Guide
         if page is not None:
