@@ -11,6 +11,7 @@ import os
 
 #from blog.api.views import PostList, PostDetail, UserDetail
 from blog.api.views import PostList, PostDetail, UserDetail, TagViewSet
+from blog.api.views import ExprmntViewSet
 from blog.api.views import PostViewSet
 """
 A DRF Router will inspect a viewset and determine what endpoints it has available,
@@ -33,7 +34,7 @@ router.register calls so it is by default determined in the method get_default_b
 SimpleRouter(BaseRouter) in rest_framework.routers.py.  The DefaultRouter class (also in rest_framework.routers.py) inherits
 form class SimpleRouter.  In get_default_basename(self, viewset) we see basename = queryset.model._meta.object_name.lower()
 which means it is set equal to the value _meta.object_name for the identified in queryset object.  In the case of
-viewset = PostViewSet, we see queryset=Post.objects.all() in class PostViewSet (found in ../blog/api/veiws.py); this queryset object
+viewset = PostViewSet, we see queryset=Post.objects.all() in class PostViewSet (found in ../blog/api/views.py); this queryset object
 includes the object named model which enables model._meta.object._name.lower() to be executed.  We can surmise that this
 results in basename being set to post.  So, for router.register("posts", PostViewSet), we see that 
 self.registry.append((prefix, viewset, basename) would result in the list ("posts",PostViewSet,"post").  We can further
@@ -125,6 +126,7 @@ router.register("posts", PostViewSet) #per router.register("posts",PostViewSet),
                                       #design the URL conf ourselves. The conventions for wiring up resources into views and urls 
                                       #can be handled automatically, using a Router class (such as above DefaultRoute()). All we  
                                       #need to do is register the appropriate view sets with a router, and let it do the rest. ..."
+#router.register("exprm", ExprmntViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(

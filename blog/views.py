@@ -52,6 +52,7 @@ def post_detail(request, slug):
 
             if comment_form.is_valid():
                 comment = comment_form.save(commit=False)
+                logger.debug("comment from comment_form.save is %s", comment)
                 comment.content_object = post
                 comment.creator = request.user
                 comment.save()
