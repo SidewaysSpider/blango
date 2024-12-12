@@ -411,15 +411,40 @@ class TagViewSet(viewsets.ModelViewSet):
     # or override `get_queryset()`/`get_serializer_class()`. 
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+    
+    def dispatch(self, request, *args, **kwargs):
+        logger.debug("In blog.api.views.TagViewSet.dispatch")
+        logger.debug("This is called by Django using view function returned by django.view.generics.base.View.as_view")
+        #For more on view returned by as_view, see sec 2.2 of the google doc "Django and the request object"
+        logger.debug("self.__class___.name = %s",self.__class__.__name__ )
+        logger.debug("dispatch args = %s",args)
+        logger.debug("dispatch kwargs = %s",kwargs)
+        resolver_match = request.resolver_match
+        logger.debug("resolver_match.view_name = %s",resolver_match.view_name)
+        logger.debug("resolver_match.func = %s",resolver_match.func)
+        logger.debug("resolver_match.func.actions = %s",resolver_match.func.actions)
+        logger.debug("dir of resolver_match.func = %s",dir(resolver_match.func))
+        logger.debug("about to execute return super().dispatch(request, *args, **kwargs)")
+        return super().dispatch(request, *args, **kwargs)
 
     @action(methods=["get"], detail=True, name="Posts with the Tag")
     def posts(self, request, pk=None):
+        logger.debug("in blog.api.views.TagViewSet.posts and request.META is")
+        logger.debug(request.META)
         path = self.request.path
+        logger.debug("in blog.api.views.TagViewSet.posts and path is")
+        logger.debug(path)
         """
         Here is an example of a url that causes this method to be executed:
         https://decidegarbo-quicknina-8000.codio.io/api/v1/tags/4/posts/
         """
         resolved = resolve(path)
+        logger.debug("in blog.api.views.TagViewSet.posts and dir(resolved) is")
+        logger.debug(dir(resolved))
+        logger.debug("in blog.api.views.TagViewSet.posts and resolved.func =%s",resolved.func)
+        logger.debug("in blog.api.views.TagViewSet.posts and resolved.view_name =%s",resolved.view_name)
+        logger.debug("in blog.api.views.TagViewSet.posts and dir(resolved.view_name) =%s",dir(resolved.view_name))
+        logger.debug("in blog.api.views.TagViewSet.posts and resolved.route =%s",resolved.route)
         url_name = resolved.url_name
         logger.debug("in blog.api.views.TagViewSet.posts and url_name is")
         logger.debug(url_name)
