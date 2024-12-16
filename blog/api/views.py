@@ -190,7 +190,7 @@ for documentation on RetrieveModelMixin.
 class UserDetail(generics.RetrieveAPIView):
 
     def args_checker(self,request,*args,**kwargs):
-        #The only purpose of args_checker is to log to the console the type and/or values for request and args.
+        #The only purpose of args_checker is to log to the console the type and values for request and args.
         #futher down in def get() we have:
         #new_element = "NYJets are losers!"
         #new_args = args + (new_element,)
@@ -724,6 +724,16 @@ class PostViewSet(viewsets.ModelViewSet):
     @method_decorator(vary_on_headers("Authorization"))
     @method_decorator(vary_on_cookie)
     @action(methods=["get"], detail=False, name="Posts by the logged in user")
+    #The above @action decorator enables users to enter ../api/v1/posts/mine without the need for
+    #there to be a separate viewset, eg: PostMineViewSet, added to this views.py module. 
+    #By setting methods=["get"] Django knows that if request.method = GET it should call the 
+    #PostViewSet.mine method directly and when it does the serialization is taken care of by
+    #mine and it returns a Response object.  This is in contrast to what happens say when 
+    #../api/v1/posts or ../api/v1/posts/2/ is entered; when that happens Django executes
+    #PostViewSet.as_view and based on the classes inherited by PostViewSet the end result
+    #is that a method in one the methods in rest_framework.mixins.py gets unless overriden
+    #in PostViewSet. 
+    #
     def mine(self, request):
         if request.user.is_anonymous:
             raise PermissionDenied("You must be logged in to see which Posts are yours")
