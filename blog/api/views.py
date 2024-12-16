@@ -730,9 +730,9 @@ class PostViewSet(viewsets.ModelViewSet):
     #PostViewSet.mine method directly and when it does the serialization is taken care of by
     #mine and it returns a Response object.  This is in contrast to what happens say when 
     #../api/v1/posts or ../api/v1/posts/2/ is entered; when that happens Django executes
-    #PostViewSet.as_view and based on the classes inherited by PostViewSet the end result
-    #is that a method in one the methods in rest_framework.mixins.py gets unless overriden
-    #in PostViewSet. 
+    #PostViewSet.as_view and based on the classes inherited by PostViewSet the end result is
+    #one the methods in rest_framework.mixins.py gets exectuted unless overriden in in PostViewSet
+    #in which case that override metfod gets exectuted.
     #
     def mine(self, request):
         if request.user.is_anonymous:
